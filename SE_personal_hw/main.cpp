@@ -132,10 +132,14 @@ void Solve::CLintersect(Circle* circle1, Line* line2, set<pair<double, double>>*
             (*interSet).insert(pair<double, double>(p2_x, y));
         }
         else {
-            double p1_x = -(c1 - (b1 * (b1 * c1 + a1 * sqrt(-a * a * a1 * a1 - 2 * a * a1 * b * b1 - 2 * a * a1 * c1 + a1 * a1 * r * r - b * b * b1 * b1 - 2 * b * b1 * c1 + b1 * b1 * r * r - c1 * c1) - a1 * a1 * b + a * a1 * b1)) / (a1 * a1 + b1 * b1)) / a1;
-            double p2_x = -(c1 - (b1 * (b1 * c1 - a1 * sqrt(-a * a * a1 * a1 - 2 * a * a1 * b * b1 - 2 * a * a1 * c1 + a1 * a1 * r * r - b * b * b1 * b1 - 2 * b * b1 * c1 + b1 * b1 * r * r - c1 * c1) - a1 * a1 * b + a * a1 * b1)) / (a1 * a1 + b1 * b1)) / a1;
-            double p1_y = -(b1 * c1 + a1 * sqrt(-a * a * a1 * a1 - 2 * a * a1 * b * b1 - 2 * a * a1 * c1 + a1 * a1 * r * r - b * b * b1 * b1 - 2 * b * b1 * c1 + b1 * b1 * r * r - c1 * c1) - a1 * a1 * b + a * a1 * b1) / (a1 * a1 + b1 * b1);
-            double p2_y = -(b1 * c1 - a1 * sqrt(-a * a * a1 * a1 - 2 * a * a1 * b * b1 - 2 * a * a1 * c1 + a1 * a1 * r * r - b * b * b1 * b1 - 2 * b * b1 * c1 + b1 * b1 * r * r - c1 * c1) - a1 * a1 * b + a * a1 * b1) / (a1 * a1 + b1 * b1);
+            double delta = sqrt(-a * a * a1 * a1 - 2 * a * a1 * b * b1 - 2 * a * a1 * c1 + a1 * a1 * r * r - b * b * b1 * b1 - 2 * b * b1 * c1 + b1 * b1 * r * r - c1 * c1);
+            double value1 = a1 * delta - a1 * a1 * b + a * a1 * b1;
+            double value2 = a1 * a1 + b1 * b1;
+            
+            double p1_x = -(c1 - (b1 * (b1 * c1 + value1)) / (value2)) / a1;
+            double p2_x = -(c1 - (b1 * (b1 * c1 - value1)) / (value2)) / a1;
+            double p1_y = -(b1 * c1 + value1) / (value2);
+            double p2_y = -(b1 * c1 - value1) / (value2);
             (*interSet).insert(pair<double, double>(p1_x, p1_y));
             (*interSet).insert(pair<double, double>(p2_x, p2_y));
         }
