@@ -7,12 +7,42 @@
 
 using namespace std;
 
-void getIntersect(Shape* s1, Shape* s2, set<pair<double, double>>* interSet);
-void LLintersect(Line* l1, Line* l2, set<pair<double, double>>* interSet);
-void CCintersect(Circle* c1, Circle* c2, set<pair<double, double>>* interSet);
-void CLintersect(Circle* c1, Line* l2, set<pair<double, double>>* interSet);
+Shape *shapeList[500000];
 
-void getIntersect(Shape* s1, Shape* s2, set<pair<double, double>>* interSet) {   //计算两条图形的交点
+class Solve {
+public:
+    int num;
+    int cnt;
+    set<pair<double, double>> interSet;
+    
+    Solve(int num);
+    int getSolve();
+    void addShape(Shape *s);
+    void getIntersect(Shape* s1, Shape* s2, set<pair<double, double>>* interSet);
+    void LLintersect(Line* l1, Line* l2, set<pair<double, double>>* interSet);
+    void CCintersect(Circle* c1, Circle* c2, set<pair<double, double>>* interSet);
+    void CLintersect(Circle* c1, Line* l2, set<pair<double, double>>* interSet);
+};
+
+Solve::Solve(int num) {
+    this->num = num;
+    cnt = 0;
+}
+
+int Solve::getSolve() {
+    for (int i = 0; i < num; i++) {
+        for (int j = i + 1; j < num; j++) {
+            getIntersect(shapeList[i], shapeList[j], &interSet);
+        }
+    }
+    return (int)interSet.size();
+}
+
+void Solve::addShape(Shape *s) {
+    shapeList[cnt++] = s;
+}
+
+void Solve::getIntersect(Shape* s1, Shape* s2, set<pair<double, double>>* interSet) {   //计算两条图形的交点
     char t1, t2;
     t1 = s1->type;
     t2 = s2->type;
@@ -35,7 +65,7 @@ void getIntersect(Shape* s1, Shape* s2, set<pair<double, double>>* interSet) {  
     }
 }
 
-void LLintersect(Line* l1, Line* l2, set<pair<double, double>>* interSet) {
+void Solve::LLintersect(Line* l1, Line* l2, set<pair<double, double>>* interSet) {
     double a1 = (double)l1->y1 - l1->y2;
     double b1 = (double)l1->x2 - l1->x1;
     double c1 = (double)l1->x1 * l1->y2 - (double)l1->x2 * l1->y1;  //l1: a1x + b1y + c1 = 0
@@ -54,7 +84,7 @@ void LLintersect(Line* l1, Line* l2, set<pair<double, double>>* interSet) {
     }
 }
 
-void CCintersect(Circle* c1, Circle* c2, set<pair<double, double>>* interSet) {
+void Solve::CCintersect(Circle* c1, Circle* c2, set<pair<double, double>>* interSet) {
     double a1 = c1->x;
     double b1 = c1->y;
     double r1 = c1->r;
@@ -81,7 +111,7 @@ void CCintersect(Circle* c1, Circle* c2, set<pair<double, double>>* interSet) {
     }
 }
 
-void CLintersect(Circle* circle1, Line* line2, set<pair<double, double>>* interSet) {
+void Solve::CLintersect(Circle* circle1, Line* line2, set<pair<double, double>>* interSet) {
     double a = circle1->x;
     double b = circle1->y;
     double r = circle1->r;
@@ -118,33 +148,26 @@ int main(int argc, const char* argv[]) {
     ifstream fin(argv[2], ios::in);
     ofstream fout(argv[4], ios::out);
     int num = 0;
-    fin >> num;
-    static Shape* shapeList[500000];
+    cin >> num;
+    Solve *sol = new Solve(num);
     for (int i = 0; i < num; i++) {
         char type;
-        fin >> type;
+        cin >> type;
         if (type == 'L') {
             int x1, y1, x2, y2;
-            fin >> x1 >> y1 >> x2 >> y2;
+            cin >> x1 >> y1 >> x2 >> y2;
             Line* newline = new Line(x1, y1, x2, y2);
-            shapeList[i] = newline;
+            sol->addShape(newline);
         }
         else {
             int x, y, r;
-            fin >> x >> y >> r;
+            cin >> x >> y >> r;
             Circle* newcircle = new Circle(x, y, r);
-            shapeList[i] = newcircle;
+            sol->addShape(newcircle);
         }
     }
 
-    set<pair<double, double>> interSet;
-    for (int i = 0; i < num; i++) {
-        for (int j = i + 1; j < num; j++) {
-            getIntersect(shapeList[i], shapeList[j], &interSet);
-        }
-    }
-
-    fout << interSet.size() << endl;
+    cout << sol->getSolve() << endl;
 
     fin.close();
     fout.close();
