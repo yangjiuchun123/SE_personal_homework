@@ -7,7 +7,7 @@
 
 using namespace std;
 
-Shape* shapeList[500000];
+static Shape* shapeList[500000];
 
 class Solve {
 public:
