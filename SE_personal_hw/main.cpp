@@ -7,17 +7,17 @@
 
 using namespace std;
 
-Shape *shapeList[500000];
+Shape* shapeList[500000];
 
 class Solve {
 public:
     int num;
     int cnt;
     set<pair<double, double>> interSet;
-    
+
     Solve(int num);
     int getSolve();
-    void addShape(Shape *s);
+    void addShape(Shape* s);
     void getIntersect(Shape* s1, Shape* s2, set<pair<double, double>>* interSet);
     void LLintersect(Line* l1, Line* l2, set<pair<double, double>>* interSet);
     void CCintersect(Circle* c1, Circle* c2, set<pair<double, double>>* interSet);
@@ -38,7 +38,7 @@ int Solve::getSolve() {
     return (int)interSet.size();
 }
 
-void Solve::addShape(Shape *s) {
+void Solve::addShape(Shape* s) {
     shapeList[cnt++] = s;
 }
 
@@ -126,20 +126,20 @@ void Solve::CLintersect(Circle* circle1, Line* line2, set<pair<double, double>>*
     else {
         if (a1 == 0) {
             double y = -c1 / b1;
-            double p1_x = sqrt(r * r + (y - b) * (y - b)) + a;
-            double p2_x = -sqrt(r * r + (y - b) * (y - b)) + a;
+            double p1_x = sqrt(r * r - (y - b) * (y - b)) + a;
+            double p2_x = -sqrt(r * r - (y - b) * (y - b)) + a;
             (*interSet).insert(pair<double, double>(p1_x, y));
             (*interSet).insert(pair<double, double>(p2_x, y));
         }
         else {
             double delta = sqrt(-a * a * a1 * a1 - 2 * a * a1 * b * b1 - 2 * a * a1 * c1 + a1 * a1 * r * r - b * b * b1 * b1 - 2 * b * b1 * c1 + b1 * b1 * r * r - c1 * c1);
-            double value1 = a1 * delta - a1 * a1 * b + a * a1 * b1;
+            double value1 = - a1 * a1 * b + a * a1 * b1;
             double value2 = a1 * a1 + b1 * b1;
-            
-            double p1_x = -(c1 - (b1 * (b1 * c1 + value1)) / (value2)) / a1;
-            double p2_x = -(c1 - (b1 * (b1 * c1 - value1)) / (value2)) / a1;
-            double p1_y = -(b1 * c1 + value1) / (value2);
-            double p2_y = -(b1 * c1 - value1) / (value2);
+
+            double p1_x = -(c1 - (b1 * (b1 * c1 + a1 * delta + value1)) / (value2)) / a1;
+            double p2_x = -(c1 - (b1 * (b1 * c1 - a1 * delta + value1)) / (value2)) / a1;
+            double p1_y = -(b1 * c1 + a1 * delta + value1) / (value2);
+            double p2_y = -(b1 * c1 - a1 * delta + value1) / (value2);
             (*interSet).insert(pair<double, double>(p1_x, p1_y));
             (*interSet).insert(pair<double, double>(p2_x, p2_y));
         }
@@ -152,26 +152,26 @@ int main(int argc, const char* argv[]) {
     ifstream fin(argv[2], ios::in);
     ofstream fout(argv[4], ios::out);
     int num = 0;
-    cin >> num;
-    Solve *sol = new Solve(num);
+    fin >> num;
+    Solve* sol = new Solve(num);
     for (int i = 0; i < num; i++) {
         char type;
-        cin >> type;
+        fin >> type;
         if (type == 'L') {
             int x1, y1, x2, y2;
-            cin >> x1 >> y1 >> x2 >> y2;
+            fin >> x1 >> y1 >> x2 >> y2;
             Line* newline = new Line(x1, y1, x2, y2);
             sol->addShape(newline);
         }
         else {
             int x, y, r;
-            cin >> x >> y >> r;
+            fin >> x >> y >> r;
             Circle* newcircle = new Circle(x, y, r);
             sol->addShape(newcircle);
         }
     }
 
-    cout << sol->getSolve() << endl;
+    fout << sol->getSolve() << endl;
 
     fin.close();
     fout.close();

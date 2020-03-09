@@ -7,15 +7,15 @@ public:
     char type;
 };
 
-class Line: public Shape {    //ç›´çº¿ç±»ï¼Œä½¿ç”¨ä¸¤ç‚¹å®šä¹‰
+class Line : public Shape {    //Ö±ÏßÀà£¬Ê¹ÓÃÁ½µã¶¨Òå
 public:
     int x1;
-    int y1;   //ç¬¬ä¸€ä¸ªç‚¹çš„æ¨ªçºµåæ ‡
+    int y1;   //µÚÒ»¸öµãµÄºá×İ×ø±ê
     int x2;
-    int y2;   //ç¬¬äºŒä¸ªç‚¹çš„æ¨ªçºµåæ ‡
+    int y2;   //µÚ¶ş¸öµãµÄºá×İ×ø±ê
     Line(int x1, int y1, int x2, int y2);
     void showLineStatus();
-    
+
 };
 
 Line::Line(int x1, int y1, int x2, int y2) {
@@ -30,14 +30,14 @@ void Line::showLineStatus() {
     cout << "line gets through: (" << x1 << ", " << y1 << ") and (" << x2 << ", " << y2 << ")" << endl;
 }
 
-class Circle: public Shape {    //åœ†ç±»ï¼Œä½¿ç”¨åœ†å¿ƒ-åŠå¾„å®šä¹‰
+class Circle : public Shape {    //Ô²Àà£¬Ê¹ÓÃÔ²ĞÄ-°ë¾¶¶¨Òå
 public:
     int x;
     int y;
     int r;
     Circle(int x, int y, int r);
     void showCircleStatus();
-    
+
 };
 
 Circle::Circle(int x, int y, int r) {
