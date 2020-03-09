@@ -166,5 +166,29 @@ namespace UnitTest
 			Assert::AreEqual(5, sol->getSolve());
 		}
 
+		TEST_METHOD(TestMethod13)
+		{
+			Solve* sol = new Solve(3);
+			Line* l1 = new Line(0, 0, 1, 1);
+			Circle* c1 = new Circle(3, 0, 1);
+			Circle* c2 = new Circle(-2, 0, 1);
+			sol->addShape(l1);
+			sol->addShape(c1);
+			sol->addShape(c2);
+			Assert::AreEqual(0, sol->getSolve());
+		}
+
+		TEST_METHOD(TestMethod14)
+		{
+			Solve* sol = new Solve(3);
+			Line* l1 = new Line(0, 0, 1, 0);
+			Circle* c1 = new Circle(0, 0, 5);
+			Circle* c2 = new Circle(3, 0, 2);
+			sol->addShape(l1);
+			sol->addShape(c1);
+			sol->addShape(c2);
+			Assert::AreEqual(3, sol->getSolve());
+		}
+
 	};
 }
